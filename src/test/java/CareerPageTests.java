@@ -2,10 +2,10 @@ import Config.BaseConfig;
 import Pages.CareerPage;
 import Pages.HomePage;
 import jdk.jfr.Description;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.testng.Assert;
 
 public class CareerPageTests extends BaseConfig {
 

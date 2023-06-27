@@ -4,13 +4,14 @@ import Pages.CareerPage;
 import Pages.HomePage;
 import Pages.JobsPage;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import static Config.BaseConfig.getDriver;
 import static ConstantValue.WebSite.websiteLink;
@@ -71,13 +72,11 @@ public class TestMethods {
     {
         WebElement scroll = driver.findElement(by);
         scroll.sendKeys(Keys.PAGE_DOWN);
-        /*WebElement element = new WebDriverWait(getDriver(), 30).
-                until(ExpectedConditions.elementToBeClickable(by));*/
-       // ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
     }
-    public void hoverElement(By by) {
+    public boolean hoverElement(By by) {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(findElement(by)).build().perform();
+        return true;
     }
     public void selectOptionByValue(By by, String value) {
         Select select = new Select(findElement(by));
@@ -112,6 +111,24 @@ public class TestMethods {
     {
         untilElementLocated(By.id(s));
         return getDriver().findElements(By.id(s));
+    }
+    public boolean secondWindow()
+    {
+        boolean isblank = true;
+        String parent=getDriver().getWindowHandle();
+        Set<String>s=getDriver().getWindowHandles();
+        Iterator<String> I1= s.iterator();
+        while(I1.hasNext())
+        {
+            String child_window=I1.next();
+            if(!parent.equals(child_window))
+            {
+               isblank =getDriver().switchTo().window(child_window).getCurrentUrl().isBlank();
+            }
+
+        }
+        return isblank;
+
     }
     public int listSizeCssSelector(String path)
     {
