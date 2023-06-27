@@ -1,10 +1,10 @@
 package TestMethods;
 
+import Pages.CareerPage;
 import Pages.HomePage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import Pages.JobsPage;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 import static Config.BaseConfig.getDriver;
+import static ConstantValue.WebSite.websiteLink;
 
 public class TestMethods {
 
@@ -25,8 +26,16 @@ public class TestMethods {
     }
     public HomePage callHomePage()
     {
-        driver.get("");
-        return new HomePage(driver);
+        getDriver().get(websiteLink);
+        return new HomePage(getDriver());
+    }
+    public JobsPage callJobsPage()
+    {
+        return new JobsPage(driver);
+    }
+    public CareerPage callCareerPage()
+    {
+        return new CareerPage(driver);
     }
     public WebElement findElement(By by)
     {
@@ -43,13 +52,31 @@ public class TestMethods {
         new WebDriverWait(getDriver(), 30).
                 until(ExpectedConditions.visibilityOfElementLocated(by));
     }
+    public void clickElement(By by) {
+
+        untilElementClickable(by);
+        getDriver().findElement(by).click();
+    }
     public void untilElementClickable(By by)
     {
         new WebDriverWait(getDriver(), 30).
                 until(ExpectedConditions.elementToBeClickable(by));
     }
+    public void scrollPage(int scrollValue)
+    {
+        JavascriptExecutor jse = (JavascriptExecutor)getDriver();
+        jse.executeScript("window.scrollBy(0,"+scrollValue+")");
+    }
+    public void scrollUntilElement(By by)
+    {
+        WebElement scroll = driver.findElement(by);
+        scroll.sendKeys(Keys.PAGE_DOWN);
+        /*WebElement element = new WebDriverWait(getDriver(), 30).
+                until(ExpectedConditions.elementToBeClickable(by));*/
+       // ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
+    }
     public void hoverElement(By by) {
-        Actions actions = new Actions(driver);
+        Actions actions = new Actions(getDriver());
         actions.moveToElement(findElement(by)).build().perform();
     }
     public void selectOptionByValue(By by, String value) {
@@ -81,16 +108,19 @@ public class TestMethods {
         untilElementLocated(By.cssSelector(s));
         return getDriver().findElements(By.cssSelector(s));
     }
+    public List<WebElement> getElementsId(String s)
+    {
+        untilElementLocated(By.id(s));
+        return getDriver().findElements(By.id(s));
+    }
+    public int listSizeCssSelector(String path)
+    {
+        return  getDriver().findElements(By.cssSelector(path)).size();
+    }
     public void KeyBoardClick(By by)
     {
         untilElementLocated(by);
         findElement(by).sendKeys(Keys.ENTER);
     }
-    public String getPageTitle()
-    {
-       return getDriver().getTitle();
-
-    }
-
 
 }

@@ -10,7 +10,6 @@ public class HomePageTest extends BaseConfig {
     @Test
     public void homePageVisibleControl()
     {
-        String title = new HomePage(getDriver()).getPageTitle();
-        Assert.assertEquals("#1 Leader in Individualized, Cross-Channel CX — Insider",title) ;
+        Assert.assertEquals("https://useinsider.com/",getDriver().getCurrentUrl()) ;
     }
 }
